@@ -1,4 +1,4 @@
-package com.example.appdev.models;
+package com.example.chatify.models;
 
 public class ChatMessage {
     private String messageId;

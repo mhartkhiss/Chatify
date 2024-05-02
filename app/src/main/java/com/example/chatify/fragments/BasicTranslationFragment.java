@@ -1,4 +1,4 @@
-package com.example.appdev.fragments;
+package com.example.chatify.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,13 +24,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.appdev.R;
-import com.example.appdev.classes.TranslationTask_OpenAI;
-import com.example.appdev.classes.Variables;
-import com.example.appdev.models.Languages;
+import com.example.chatify.classes.TranslationTask_OpenAI;
+import com.example.chatify.classes.Variables;
+import com.example.chatify.models.Languages;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseApp;
+import com.redmatrix.chatify.R;
 
 import java.util.ArrayList;
 import java.util.Locale;

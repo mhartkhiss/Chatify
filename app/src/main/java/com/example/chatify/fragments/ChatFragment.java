@@ -1,4 +1,4 @@
-package com.example.appdev.fragments;
+package com.example.chatify.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,16 +11,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.appdev.R;
-import com.example.appdev.adapter.UserAdapter;
-import com.example.appdev.classes.Variables;
-import com.example.appdev.models.User;
+import com.example.chatify.adapter.UserAdapter;
+import com.example.chatify.classes.Variables;
+import com.example.chatify.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.redmatrix.chatify.R;
 
 import java.util.ArrayList;
 import java.util.List;

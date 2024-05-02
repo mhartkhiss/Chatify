@@ -1,4 +1,4 @@
-package com.example.appdev;
+package com.example.chatify;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +17,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.appdev.adapter.ChatAdapter;
-import com.example.appdev.classes.FetchUserField;
-import com.example.appdev.classes.Translate;
-import com.example.appdev.classes.TranslationTask_OpenAI;
-import com.example.appdev.models.ChatMessage;
+import com.example.chatify.adapter.ChatAdapter;
+import com.example.chatify.classes.FetchUserField;
+import com.example.chatify.classes.Translate;
+import com.example.chatify.classes.TranslationTask_OpenAI;
+import com.example.chatify.models.ChatMessage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.redmatrix.chatify.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

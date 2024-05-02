@@ -1,5 +1,5 @@
 // UserLanguageControl.java
-package com.example.appdev.controller;
+package com.example.chatify.controller;
 
 import android.util.Log;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.example.appdev.fragments.ProfileFragment;
+import com.example.chatify.fragments.ProfileFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

@@ -1,4 +1,4 @@
-package com.example.appdev.controller;
+package com.example.chatify.controller;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -9,13 +9,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
-import com.example.appdev.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.redmatrix.chatify.R;
 
 public class ChangePassControl implements View.OnClickListener {
 

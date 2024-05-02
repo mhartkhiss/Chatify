@@ -1,4 +1,4 @@
-package com.example.appdev.models;
+package com.example.chatify.models;
 
 public class User {
     private String userId;

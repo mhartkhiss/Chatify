@@ -1,4 +1,4 @@
-package com.example.appdev;
+package com.example.chatify;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,27 +12,23 @@ import androidx.viewpager.widget.ViewPager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.appdev.adapter.TabAdapter;
-import com.example.appdev.classes.Variables;
-import com.example.appdev.fragments.ChatFragment;
-import com.example.appdev.fragments.ProfileFragment;
-import com.example.appdev.fragments.BasicTranslationFragment;
-import com.example.appdev.models.User;
+import com.example.chatify.adapter.TabAdapter;
+import com.example.chatify.classes.Variables;
+import com.example.chatify.fragments.ChatFragment;
+import com.example.chatify.fragments.ProfileFragment;
+import com.example.chatify.models.User;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.redmatrix.chatify.R;
 
 public class MainActivity extends AppCompatActivity {
 
     public static User loggedInUser = new User();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
 
         ViewPager viewPager = findViewById(R.id.viewPager);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
@@ -40,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         // Create an adapter that returns a fragment for each tab
         TabAdapter adapter = new TabAdapter(getSupportFragmentManager());
         adapter.addFragment(new ProfileFragment(), "Profile");
-        adapter.addFragment(new BasicTranslationFragment(), "");
         adapter.addFragment(new ChatFragment(), "Chat");
 
         // Set the adapter onto the view pager
@@ -57,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 String userEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
                 // Check if the selected tab is the profile or chat tab and user's email is "a@gmail.com"
-                if ((position == 0 || position == 2) && userEmail.equals(Variables.guestUser)) {
+                if (position == 0 && userEmail.equals(Variables.guestUser)) {
 
                     // Display a dialog with message and options to login or cancel
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -77,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // Dismiss the dialog if user chooses not to login
                                     dialog.dismiss();
-                                    tabLayout.getTabAt(1).select(); // Select the voice tab
+                                    tabLayout.getTabAt(0).select(); // Select the chat tab
                                 }
                             })
                             .setOnCancelListener(new DialogInterface.OnCancelListener() {
                                 @Override
                                 public void onCancel(DialogInterface dialog) {
-                                    // Redirect the user to the voice tab when the dialog is canceled
-                                    tabLayout.getTabAt(1).select(); // Select the voice tab
+                                    // Redirect the user to the chat tab when the dialog is canceled
+                                    tabLayout.getTabAt(0).select(); // Select the chat tab
                                 }
                             })
                             .create()
@@ -103,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         // Add custom tab items with icons
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             TabLayout.Tab tab = tabLayout.getTabAt(i);
@@ -118,20 +112,14 @@ public class MainActivity extends AppCompatActivity {
                         tabIcon.setImageResource(R.drawable.ic_profile);
                         break;
                     case 1:
-                        tabIcon.setImageResource(R.drawable.ic_translate);
-                        break;
-                    case 2:
                         tabIcon.setImageResource(R.drawable.ic_chat);
                         break;
                 }
-
             }
         }
-        // Select the "Voice" tab as the default tab
-        TabLayout.Tab defaultTab = tabLayout.getTabAt(1); // Index of the "Voice" tab
+        TabLayout.Tab defaultTab = tabLayout.getTabAt(1); // Index of the "Profile" tab
         if (defaultTab != null) {
             defaultTab.select();
         }
     }
-
 }

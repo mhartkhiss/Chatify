@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="#CACACA"
     android:padding="20dp"
-    tools:context=".LanguageSetupActivity">
+    tools:context="com.example.chatify.LanguageSetupActivity">
 
     <!-- Image View -->
     <ImageView

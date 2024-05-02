@@ -1,14 +1,14 @@
-package com.example.appdev;
+package com.example.chatify;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.appdev.controller.SignUpControl;
+import com.example.chatify.controller.SignUpControl;
+import com.redmatrix.chatify.R;
 
 public class SignUpActivity extends AppCompatActivity {
 

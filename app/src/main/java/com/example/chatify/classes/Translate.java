@@ -1,4 +1,4 @@
-package com.example.appdev.classes;
+package com.example.chatify.classes;
 
 import android.content.Context;
 

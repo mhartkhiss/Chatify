@@ -1,4 +1,4 @@
-package com.example.appdev.controller;
+package com.example.chatify.controller;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,13 +10,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.example.appdev.LoginActivity;
-import com.example.appdev.R;
-import com.example.appdev.models.User;
+import com.example.chatify.LoginActivity;
+import com.example.chatify.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
+import com.redmatrix.chatify.R;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;

@@ -9,14 +9,14 @@
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_marginBottom="100dp"
-    tools:context=".LoginActivity">
+    tools:context="com.example.chatify.LoginActivity">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/speakforgelogo"
-        tools:srcCompat="@drawable/speakforgelogo" />
+        app:srcCompat="@drawable/ic_translate"
+        tools:srcCompat="@drawable/ic_translate" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

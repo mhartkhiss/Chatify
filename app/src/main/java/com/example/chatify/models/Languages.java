@@ -1,4 +1,4 @@
-package com.example.appdev.models;
+package com.example.chatify.models;
 
 import java.util.Arrays;
 import java.util.List;

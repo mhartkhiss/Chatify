@@ -1,13 +1,12 @@
-package com.example.appdev.controller;
+package com.example.chatify.controller;
 
 
 import android.app.Activity;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.example.appdev.classes.TranslationTask_OpenAI;
+import com.example.chatify.classes.TranslationTask_OpenAI;
 
 import java.util.ArrayList;
 import java.util.Locale;

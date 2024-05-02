@@ -1,4 +1,4 @@
-package com.example.appdev.adapter;
+package com.example.chatify.adapter;
 
 import android.graphics.Typeface;
 import android.util.Log;
@@ -10,11 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.appdev.models.ChatMessage;
-import com.example.appdev.R;
+import com.example.chatify.models.ChatMessage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.redmatrix.chatify.R;
 
 import java.util.ArrayList;
 import java.util.List;

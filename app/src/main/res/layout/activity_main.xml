@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#E0E0E0"
-    tools:context=".MainActivity">
+    tools:context="com.example.chatify.MainActivity">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

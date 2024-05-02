@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.appdev'
+    namespace 'com.redmatrix.chatify'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.appdev"
+        applicationId "com.redmatrix.chatify"
         minSdk 27
         targetSdk 34
         versionCode 1
