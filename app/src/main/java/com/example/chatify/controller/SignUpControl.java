@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 
 import com.example.chatify.LoginActivity;
+import com.example.chatify.ProgressDialog;
 import com.example.chatify.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
@@ -25,6 +26,7 @@ import java.util.Locale;
 public class SignUpControl implements View.OnClickListener {
 
     private Boolean isSignUpValid;
+    private ProgressDialog progressDialog;
 
 
 
@@ -37,6 +39,7 @@ public class SignUpControl implements View.OnClickListener {
         this.emailEditText = emailEditText;
         this.passwordEditText = passwordEditText;
         this.confirmPasswordEditText = confirmPasswordEditText;
+        this.progressDialog = new ProgressDialog((Activity) context);
     }
 
     @Override
@@ -56,8 +59,11 @@ public class SignUpControl implements View.OnClickListener {
         isSignUpValid = validateSignUpFields(email, password, confirmPassword);
 
         if (isSignUpValid) {
+            progressDialog.show();
+            progressDialog.setMessage("Signing up...");
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
+                        progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if (user != null) {

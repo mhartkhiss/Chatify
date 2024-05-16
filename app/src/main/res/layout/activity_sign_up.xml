@@ -14,8 +14,8 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_translate"
-        tools:srcCompat="@drawable/ic_translate" />
+        app:srcCompat="@drawable/chatifylogo"
+        tools:srcCompat="@drawable/chatifylogo" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"

@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         View loadingView = LayoutInflater.from(this).inflate(R.layout.loading, null);
         ViewGroup rootView = findViewById(android.R.id.content);
         rootView.addView(loadingView);
+        progressDialog = new ProgressDialog(LoginActivity.this);
 
         initializeFirebaseAuth();
         setListeners();
@@ -51,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuthListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
-                hideProgressBar();
                 if (!Variables.guestUser.equals(user.getEmail())) {
                     Toast.makeText(LoginActivity.this, "Welcome " + user.getEmail(), Toast.LENGTH_SHORT).show();
                 }
@@ -83,10 +84,10 @@ public class LoginActivity extends AppCompatActivity {
         txtSignUp.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
 
         btnLogin.setOnClickListener(v -> {
-            showProgressBar();
             loginUser();
         });
 
@@ -100,24 +101,24 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check if email is empty or invalid
         if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            hideProgressBar();
             Toast.makeText(this, "Invalid email address", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Check if password is empty
         if (TextUtils.isEmpty(password)) {
-            hideProgressBar();
             Toast.makeText(this, "Password cannot be empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        progressDialog.show();
+        progressDialog.setMessage("Logging in...");
+
         // Sign in the user with Firebase Authentication
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
+                    progressDialog.dismiss();
                     if (!task.isSuccessful()) {
-                        // If sign in fails, display a message to the user
-                        hideProgressBar();
                         Toast.makeText(this, "Authentication failed. Please check your credentials.", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -135,24 +136,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if (mAuthListener != null) {
-            hideProgressBar();
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
-    private void showProgressBar() {
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        if (progressBar != null) {
-            progressBar.setVisibility(View.VISIBLE);
-        }
-    }
 
-    private void hideProgressBar() {
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        if (progressBar != null) {
-            progressBar.setVisibility(View.GONE);
-        }
-    }
 
 
 

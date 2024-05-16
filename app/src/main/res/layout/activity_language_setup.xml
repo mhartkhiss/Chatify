@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CACACA"
+    android:background="@drawable/background"
     android:padding="20dp"
     tools:context="com.example.chatify.LanguageSetupActivity">
 
@@ -32,7 +32,7 @@
         android:paddingTop="30dp"
         android:gravity="center"
         android:text="Select your language for chat translation when receiving messages"
-        android:textColor="#6C6C6C"
+        android:textColor="#DDDDDD"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Select Language"
-            android:textColor="@color/black"
+            android:textColor="@color/orange"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
