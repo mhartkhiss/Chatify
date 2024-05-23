@@ -1,11 +1,11 @@
 package com.example.chatify.models;
 
-public class ChatMessage {
+public class Message {
     private String messageId;
     private String message;
     private String messageOG;
     private long timestamp;
-    private String senderId; // Add sender ID field
+    private String senderId;
     private String messageVar1;
     private String messageVar2;
     private String messageVar3;
@@ -13,17 +13,18 @@ public class ChatMessage {
     private String messageVar5;
 
 
-    public ChatMessage() {
+    public Message() {
         // Default constructor required for Firebase
     }
 
-    public ChatMessage(String messageId, String message, String messageOG, long timestamp, String senderId) {
+    public Message(String messageId, String message, String messageOG, long timestamp, String senderId) {
         this.messageId = messageId;
         this.message = message;
         this.messageOG = messageOG;
         this.timestamp = timestamp;
         this.senderId = senderId;
     }
+
 
     public String getMessageId() {
         return messageId;

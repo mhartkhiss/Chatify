@@ -62,6 +62,8 @@ public class ChatFragment extends Fragment {
 
         recyclerViewUsers.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerViewUsers.setAdapter(userAdapter);
+        searchViewUsers.setIconifiedByDefault(false);
+        searchViewUsers.setQueryHint("Search users...");
 
         // Add listener to SearchView
         searchViewUsers.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {

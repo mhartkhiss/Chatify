@@ -5,12 +5,16 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +30,7 @@ import com.example.chatify.classes.FetchUserField;
 import com.example.chatify.classes.Variables;
 import com.example.chatify.controller.ChangeProfilePicControl;
 import com.example.chatify.controller.UserLanguageControl;
+import com.example.chatify.models.Languages;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,13 +40,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.redmatrix.chatify.R;
 
+import java.util.List;
+
 public class ProfileFragment extends Fragment {
 
     private TextView textViewUsername, textViewEmail;
     private ImageView imageViewUserPicture;
     private CardView cardViewEditDetails, cardViewProfile, cardViewLanguage, cardViewChangePassword;
-    private Button btnSaveChanges, btnChangeLanguage, btnChangePassword, btnChangePassword2, btnEnglish, btnTagalog, btnBisaya;
-    private Button[] btnLanguages = new Button[3];
+    private Button btnSaveChanges, btnChangeLanguage, btnChangePassword, btnChangePassword2;
     private EditText editTextUsername, editTextOldPassword, editTextNewPassword, editTextConfirmPassword;
     private ChangeProfilePicControl changeProfilePicControl;
     private UserLanguageControl userLanguageControl;
@@ -82,11 +88,32 @@ public class ProfileFragment extends Fragment {
         });
 
         changeProfilePicControl = new ChangeProfilePicControl(this);
+        registerForContextMenu(imageViewUserPicture);
 
         setUserDetails();
         setListeners();
+        setLanguageButtons();
 
 
+    }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId() == R.id.imageViewUserPicture) {
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.profilepic_context_menu, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.remove_picture:
+                removeProfilePicture();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     private void initializeViews(View view) {
@@ -101,9 +128,6 @@ public class ProfileFragment extends Fragment {
         btnChangeLanguage = view.findViewById(R.id.btnChangeLanguage);
         btnChangePassword = view.findViewById(R.id.btnChangePassword);
         btnChangePassword2 = view.findViewById(R.id.btnChangePassword2);
-        btnLanguages[0] = view.findViewById(R.id.btnBisaya);
-        btnLanguages[1] = view.findViewById(R.id.btnTagalog);
-        btnLanguages[2] = view.findViewById(R.id.btnEnglish);
         editTextUsername = view.findViewById(R.id.editTextUsername);
         editTextOldPassword = view.findViewById(R.id.editTextOldPassword);
         editTextNewPassword = view.findViewById(R.id.editTextNewPassword);
@@ -111,6 +135,21 @@ public class ProfileFragment extends Fragment {
         userLanguageControl = new UserLanguageControl(this);
     }
 
+    private void removeProfilePicture() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
+            userRef.child("profileImageUrl").setValue("none")
+                    .addOnSuccessListener(aVoid -> {
+                        imageViewUserPicture.setImageResource(R.drawable.default_userpic);
+                        Toast.makeText(getActivity(), "Profile picture removed successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getActivity(), "Failed to remove profile picture", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Failed to remove profile picture: " + e.getMessage());
+                    });
+        }
+    }
     private void setListeners(){
 
         //CHANGE PROFILE PIC LISTENER
@@ -123,10 +162,6 @@ public class ProfileFragment extends Fragment {
         btnChangeLanguage.setOnClickListener(v ->
                 toggleCardViews(cardViewLanguage, cardViewProfile)
         );
-        //LANGUAGE BUTTONS LISTENERS
-        for (Button btnLanguage : btnLanguages) {
-            btnLanguage.setOnClickListener(v -> userLanguageControl.updateUserLanguage(btnLanguage.getText().toString(), btnChangeLanguage));
-        }
 
         //CHANGE PASSWORD LISTENERS
         btnChangePassword.setOnClickListener(v -> toggleCardViews(cardViewChangePassword, cardViewProfile));
@@ -143,6 +178,7 @@ public class ProfileFragment extends Fragment {
         cardViewToShow.setVisibility(View.VISIBLE);
         cardViewToHide.setVisibility(View.GONE);
     }
+
 
     private void saveChanges() {
         String newUsername = editTextUsername.getText().toString().trim();
@@ -165,6 +201,24 @@ public class ProfileFragment extends Fragment {
         }
 
         toggleCardViews(cardViewProfile, cardViewEditDetails);
+    }
+
+    private void setLanguageButtons() {
+        // Get the LinearLayout where you want to add the buttons
+        LinearLayout languageLayout = getView().findViewById(R.id.languagesLayout);
+
+        // Get the list of languages
+        List<String> languages = Languages.getLanguages();
+
+        // For each language, create a button
+        for (String language : languages) {
+            Button languageButton = new Button(getContext());
+            languageButton.setText(language);
+            languageButton.setOnClickListener(v -> userLanguageControl.updateUserLanguage(language, btnChangeLanguage));
+
+            // Add the button to the layout
+            languageLayout.addView(languageButton);
+        }
     }
 
     private void setUserDetails() {

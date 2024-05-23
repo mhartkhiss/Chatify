@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.chatify.ConversationModeActivity;
+import com.example.chatify.classes.Variables;
 import com.example.chatify.models.User;
 import com.redmatrix.chatify.R;
 
@@ -94,6 +95,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
             intent.putExtra("email", currentUser.getEmail()); // Pass the email to the ConversationModeActivity
             intent.putExtra("profileImageUrl", currentUser.getProfileImageUrl()); // Pass the profile
             intent.putExtra("recipientLanguage", currentUser.getLanguage());
+            Variables.contactImage = currentUser.getProfileImageUrl();
             context.startActivity(intent);
         }
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:padding="20dp"
+    android:orientation="vertical"
     tools:context="com.example.chatify.LanguageSetupActivity">
 
     <!-- Image View -->
@@ -16,11 +17,7 @@
         android:layout_height="291dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@id/cardViewLanguage"
-        app:layout_constraintDimensionRatio="16:9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_gravity="center_horizontal"
         app:srcCompat="@drawable/welcomescreen_img" />
 
     <TextView
@@ -34,9 +31,7 @@
         android:text="Select your language for chat translation when receiving messages"
         android:textColor="#DDDDDD"
         android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        android:layout_gravity="center_horizontal" />
 
     <!-- CardView -->
     <androidx.cardview.widget.CardView
@@ -46,21 +41,22 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true"
-        app:layout_constraintTop_toBottomOf="@id/imageView5"
-        app:layout_constraintBottom_toTopOf="@id/linearLayout2"
         app:cardBackgroundColor="@color/lightGrey">
 
     </androidx.cardview.widget.CardView>
 
-    <!-- ConstraintLayout for buttons -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!-- LinearLayout for buttons -->
+    <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/cardViewLanguage"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
 
         <!-- Select Language Text -->
         <TextView
@@ -71,56 +67,11 @@
             android:textColor="@color/orange"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp" />
 
-        <!-- English Button -->
-        <Button
-            android:id="@+id/btnEnglish"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#3DB8EF"
-            android:text="English"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewLanguage"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
 
-        <!-- Tagalog Button -->
-        <Button
-            android:id="@+id/btnTagalog"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#3DB8EF"
-            android:text="Tagalog"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnEnglish"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp" />
+    </LinearLayout>
 
-        <!-- Bisaya Button -->
-        <Button
-            android:id="@+id/btnBisaya"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#3DB8EF"
-            android:text="Bisaya"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnTagalog"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

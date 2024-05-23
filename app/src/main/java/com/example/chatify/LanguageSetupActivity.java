@@ -2,13 +2,18 @@ package com.example.chatify;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.chatify.models.Languages;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,30 +22,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.redmatrix.chatify.R;
 
-public class LanguageSetupActivity extends AppCompatActivity {
+import java.util.List;
 
-    Button [] btnLanguage = new Button[3];
+public class LanguageSetupActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language_setup);
 
-        btnLanguage[0] = findViewById(R.id.btnEnglish);
-        btnLanguage[1] = findViewById(R.id.btnTagalog);
-        btnLanguage[2] = findViewById(R.id.btnBisaya);
+        LinearLayout languageLayout = findViewById(R.id.linearLayout2); // Replace with your actual LinearLayout id
 
-        for (int i = 0; i < btnLanguage.length; i++) {
-            final int finalI = i;
-            btnLanguage[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    updateSourceLanguage(btnLanguage[finalI].getText().toString());
-                }
-            });
+        List<String> languages = Languages.getLanguages();
+
+        for (String language : languages) {
+            Button languageButton = new Button(this);
+            languageButton.setText(language);
+            languageButton.setOnClickListener(v -> updateSourceLanguage(language));
+
+            languageLayout.addView(languageButton);
         }
-
-
     }
 
     private void updateSourceLanguage(String language) {

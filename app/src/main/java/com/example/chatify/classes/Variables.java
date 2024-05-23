@@ -7,17 +7,11 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Variables {
 
     public static final String djangoServer = "appdev.redirectme.net:25565";
-    public static final String djangoServer2 = "appdev.redirectme.net:24454";
     public static final String guestUser = "a@gmail.com";
     public static final String guestUserPassword = "asdasd";
     //------------------------------------------------------------------------
-    public static final String request = "http://"; //change to https if needed, django uses http by default
-    public static final String loginURL = request + djangoServer + "/api/login/";
-    public static final String registerURL = request + djangoServer + "/api/register/";
+    public static final String request = "http://";
+    public static  String contactImage = "";
     public static final String translateURL = request + djangoServer + "/api/translate/";
-    public static final String translateURL2 = request + djangoServer + "/translate/";
-    public static final String supportedLanguagesURL = request + djangoServer + "/api/get_supported_languages/";
-    public static final String registerSuccess = "Registration Successful";
-    public static final String loginSuccess = "Login Successful";
     public static final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 }

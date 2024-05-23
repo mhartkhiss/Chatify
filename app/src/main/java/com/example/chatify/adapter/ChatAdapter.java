@@ -1,6 +1,7 @@
 package com.example.chatify.adapter;
 
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chatify.models.ChatMessage;
+import com.bumptech.glide.Glide;
+import com.example.chatify.models.Message;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.redmatrix.chatify.R;
 
 import java.util.ArrayList;
@@ -21,15 +27,17 @@ import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
-    private List<ChatMessage> messages;
+    private List<Message> messages;
     private DatabaseReference messagesRef;
     private String roomId;
+    private List<TextView> visibleOriginalMessages;
 
     public ChatAdapter() {
         this.messages = new ArrayList<>();
+        this.visibleOriginalMessages = new ArrayList<>();
     }
 
-    public void setMessages(List<ChatMessage> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
         notifyDataSetChanged();
     }
@@ -38,21 +46,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         this.messages = new ArrayList<>();
         this.messagesRef = messagesRef;
         this.roomId = roomId;
+        this.visibleOriginalMessages = new ArrayList<>();
     }
 
     @NonNull
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the appropriate layout based on the senderId
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 viewType == 0 ? R.layout.item_message_sent : R.layout.item_message_received,
                 parent, false);
-        return new ChatViewHolder(view, messagesRef, roomId);
+        return new ChatViewHolder(view, messagesRef, roomId, visibleOriginalMessages);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-        ChatMessage message = messages.get(position);
+        Message message = messages.get(position);
         holder.bind(message);
     }
 
@@ -63,40 +71,41 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     @Override
     public int getItemViewType(int position) {
-        // Determine the message type based on senderId
         String senderId = messages.get(position).getSenderId();
         return senderId.equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) ? 0 : 1;
     }
 
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewMessage;
+        private TextView textViewMessage, textViewOriginalMessage;
         private DatabaseReference messagesRef;
         private String roomId;
+        private List<TextView> visibleOriginalMessages;
+        private de.hdodenhof.circleimageview.CircleImageView imageViewProfile;
+        private DatabaseReference usersRef;
 
-        public ChatViewHolder(@NonNull View itemView, DatabaseReference messagesRef, String roomId) {
+        public ChatViewHolder(@NonNull View itemView, DatabaseReference messagesRef, String roomId, List<TextView> visibleOriginalMessages) {
             super(itemView);
             textViewMessage = itemView.findViewById(R.id.textViewMessage);
+            textViewOriginalMessage = itemView.findViewById(R.id.textViewOriginalMessage);
             this.messagesRef = messagesRef;
             this.roomId = roomId;
+            this.visibleOriginalMessages = visibleOriginalMessages;
+            imageViewProfile = itemView.findViewById(R.id.imageViewProfile);
+            usersRef = FirebaseDatabase.getInstance().getReference("users"); // Assuming user profiles are stored under "users"
         }
 
-        public void bind(ChatMessage message) {
+        public void bind(Message message) {
             FirebaseAuth auth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = auth.getCurrentUser();
 
             if (currentUser != null && message.getSenderId().equals(currentUser.getUid())) {
-                if (message.getMessageOG() != null) {
-                    textViewMessage.setText(message.getMessageOG());
-                } else {
-                    textViewMessage.setText(message.getMessage());
-                }
+                loadProfileImage(currentUser.getUid());
+                textViewMessage.setText(message.getMessageOG() != null ? message.getMessageOG() : message.getMessage());
 
-                // Add OnClickListener to textViewMessage
                 textViewMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // Check if the messageOG is not null
                         if (message.getMessageOG() != null) {
                             // Toggle between original message and translated message
                             if (textViewMessage.getText().toString().equals(message.getMessage())) {
@@ -106,15 +115,27 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                                 textViewMessage.setTypeface(null, Typeface.ITALIC);
                                 textViewMessage.setText(message.getMessage());
                             }
-                        } else {
-                            // Handle the case when messageOG is null
-                            // Here you can show a message or take appropriate action
                         }
                     }
                 });
             } else {
+                loadProfileImage(message.getSenderId());
                 textViewMessage.setText(message.getMessage());
-                // Add OnClickListener to textViewMessage
+                textViewMessage.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        // Hide all visible original messages
+                        for (TextView textView : visibleOriginalMessages) {
+                            textView.setVisibility(View.GONE);
+                        }
+                        visibleOriginalMessages.clear();
+
+                        textViewOriginalMessage.setVisibility(View.VISIBLE);
+                        textViewOriginalMessage.setText(message.getMessageOG());
+                        visibleOriginalMessages.add(textViewOriginalMessage);
+                        return true;
+                    }
+                });
                 textViewMessage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -122,7 +143,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                         String currentMessage = textViewMessage.getText().toString();
                         String messageId = message.getMessageId();
 
-                        // Create a list of message variations
+                        for (TextView textView : visibleOriginalMessages) {
+                            textView.setVisibility(View.GONE);
+                        }
+                        visibleOriginalMessages.clear();
+
                         List<String> messageVariations = new ArrayList<>();
                         messageVariations.add(message.getMessageVar1().replace("\"", ""));
                         messageVariations.add(message.getMessageVar2().replace("\"", ""));
@@ -130,7 +155,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
                         int currentIndex = messageVariations.indexOf(currentMessage);
 
-                        // Select the next variation in the list
                         String nextVariation;
                         if (currentIndex == messageVariations.size() - 1) {
                             // If the current message is the last variation in the list, select the first variation
@@ -153,10 +177,40 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             }
         }
 
+        private void loadProfileImage(String senderId) {
+            usersRef.child(senderId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String profileImageUrl = snapshot.child("profileImageUrl").getValue(String.class);
+                        // Check if the layout is item_message_sent or item_message_received
+                        int layoutType = getItemViewType();
+                        if (layoutType == 0) { // If layout is item_message_sent, don't load image
+                            return;
+                        } else if (profileImageUrl != null && !profileImageUrl.isEmpty()) {
+                            // Load profile image if URL is not null or empty
+                            Glide.with(itemView.getContext())
+                                    .load(profileImageUrl)
+                                    .placeholder(R.drawable.default_userpic)
+                                    .into(imageViewProfile);
+                        } else {
+                            // Use a default image if profileImageUrl is null or empty
+                            imageViewProfile.setImageResource(R.drawable.default_userpic);
+                        }
+                    } else {
+                        // Use a default image if user data doesn't exist
+                        imageViewProfile.setImageResource(R.drawable.default_userpic);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Use a default image if database operation is cancelled
+                    imageViewProfile.setImageResource(R.drawable.default_userpic);
+                }
+            });
+        }
+
 
     }
 }
-
-
-
-

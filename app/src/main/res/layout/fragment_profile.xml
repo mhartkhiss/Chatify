@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Change Password"
-                android:backgroundTint="@color/orange"
+                android:backgroundTint="@color/purple_200"
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="8dp"/>
 
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Change Language"
-                android:backgroundTint="@color/orange"
+                android:backgroundTint="@color/purple_200"
                 android:textColor="@android:color/black"/>
 
         </LinearLayout>
@@ -191,6 +191,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/cardViewLanguage"
+            android:layout_above="@id/btnLogout"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
             app:cardUseCompatPadding="true"
@@ -198,7 +199,13 @@
             app:cardBackgroundColor="@color/lightGrey"
             android:visibility="gone">
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center">
+
             <LinearLayout
+                android:id="@+id/languagesLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -216,31 +223,9 @@
                     android:layout_marginBottom="8dp"
                     android:drawablePadding="8dp"/>
 
-                <Button
-                    android:id="@+id/btnEnglish"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="English"
-                    android:backgroundTint="#3DB8EF"
-                    android:textColor="@android:color/black"
-                    android:layout_marginBottom="8dp"/>
-
-                <Button
-                    android:id="@+id/btnTagalog"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tagalog"
-                    android:backgroundTint="#3DB8EF"
-                    android:textColor="@android:color/black"/>
-                <Button
-                    android:id="@+id/btnBisaya"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Bisaya"
-                    android:backgroundTint="#3DB8EF"
-                    android:textColor="@android:color/black"/>
-
             </LinearLayout>
+
+            </ScrollView>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView

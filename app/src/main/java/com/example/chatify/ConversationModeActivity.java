@@ -21,7 +21,7 @@ import com.example.chatify.adapter.ChatAdapter;
 import com.example.chatify.classes.FetchUserField;
 import com.example.chatify.classes.Translate;
 import com.example.chatify.classes.TranslationTask_OpenAI;
-import com.example.chatify.models.ChatMessage;
+import com.example.chatify.models.Message;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -300,9 +300,9 @@ public class ConversationModeActivity extends AppCompatActivity {
             messagesRef.child(roomId).orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    List<ChatMessage> messages = new ArrayList<>();
+                    List<Message> messages = new ArrayList<>();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        ChatMessage message = snapshot.getValue(ChatMessage.class);
+                        Message message = snapshot.getValue(Message.class);
                         if (message != null) {
                             messages.add(message);
                         }
